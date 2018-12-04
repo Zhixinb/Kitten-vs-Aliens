@@ -2,4 +2,6 @@
     <string name="app_name">Kitten Vs Alien</string>
     <string name="alien">Alien</string>
     <string name="kitten">Kitten</string>
+    <string name="robo_cat">https://robohash.org/9001?set=set4</string>
+    <string name="alpha_numeric">0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ</string>
 </resources>
