@@ -11,7 +11,7 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 
-class MainActivity : AppCompatActivity() {
+class GameActivity : AppCompatActivity() {
     val timer = Timer()
     val timehandler = Handler()
     var g : GameView? = null

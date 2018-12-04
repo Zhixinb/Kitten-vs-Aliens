@@ -7,4 +7,12 @@ class Entity(val bitmap: Bitmap?, var x : Float, var y : Float, val vX : Int, va
         x += vX
         y += vY
     }
+
+    fun height() : Int{
+        return  bitmap!!.height
+    }
+
+    fun width() : Int {
+        return bitmap!!.width
+    }
 }
