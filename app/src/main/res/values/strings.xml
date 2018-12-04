@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Kitten Vs Alien</string>
+    <string name="alien">Alien</string>
+    <string name="kitten">Kitten</string>
 </resources>
