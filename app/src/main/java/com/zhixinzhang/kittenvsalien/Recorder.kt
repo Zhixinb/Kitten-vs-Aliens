@@ -2,8 +2,8 @@ package com.zhixinzhang.kittenvsalien
 
 import android.media.MediaRecorder
 
-class Recorder(var mRecorder: MediaRecorder? = null){
-
+class Recorder(){
+    var mRecorder: MediaRecorder? = null
 
     fun startRecorder() {
         if (mRecorder == null) {
