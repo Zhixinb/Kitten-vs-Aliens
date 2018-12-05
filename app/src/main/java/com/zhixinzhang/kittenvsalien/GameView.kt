@@ -14,10 +14,7 @@ import android.graphics.*
 import android.opengl.ETC1.getHeight
 import android.opengl.ETC1.getWidth
 import android.media.MediaRecorder
-
-
-
-
+import kotlin.math.sign
 
 
 class GameView(context: Context?, w: Float, h: Float, alienArray: ArrayList<ImageView>, kitten: ImageView) : View(context) {
@@ -25,6 +22,7 @@ class GameView(context: Context?, w: Float, h: Float, alienArray: ArrayList<Imag
     val high = h
     val timer = Timer()
     val timehandler = Handler()
+    val recorder = Recorder()
 
     val enemyPoints = 100
     var score = 0
@@ -53,14 +51,14 @@ class GameView(context: Context?, w: Float, h: Float, alienArray: ArrayList<Imag
 
     fun startTimer() {
         timer.schedule(timetask, 1, 10)
-        startRecorder()
+        recorder.startRecorder()
     }
 
     fun stopTimer() {
         timer.cancel()
         timer.purge()
 
-        stopRecorder()
+        recorder.stopRecorder()
     }
 
     override fun onDraw(canvas: Canvas?) {
@@ -136,7 +134,7 @@ class GameView(context: Context?, w: Float, h: Float, alienArray: ArrayList<Imag
             entity.move()
         }
 
-        Log.d("micget", getAmplitude().toString())
+        Log.d("micget", recorder.getAmplitude().toString())
         //kittenEntity?.move()
     }
 
@@ -224,12 +222,12 @@ class GameView(context: Context?, w: Float, h: Float, alienArray: ArrayList<Imag
 
             // Choose a random alien bitmap
             val index = random.nextInt(alienBitmaps.size)
-            if (alienBitmaps[index] != null) {
+            if (alienBitmaps[index] != null && kittenEntity != null) {
                 var xPos = random.nextInt(alienArray.size) * wide / alienArray.size
                 Log.d("debug", "xPo generated:" + xPos)
                 if (!isColliding(xPos.toInt(), 0, alienBitmaps[index]!!.width, alienBitmaps[index]!!.height,  alienEntityList)) {
                     Log.d("debug", "xPos used:" + xPos)
-                    addEntity(alienEntityList, alienBitmaps[index], xPos, 0F, 0, random.nextInt(maxSpeed - minSpeed) + minSpeed)
+                    addEntity(alienEntityList, alienBitmaps[index], xPos, 0F, (sign(kittenEntity!!.x - xPos) * random.nextInt(maxSpeed)).toInt(), random.nextInt(maxSpeed - minSpeed) + minSpeed)
                 }
 
             }
@@ -308,35 +306,7 @@ class GameView(context: Context?, w: Float, h: Float, alienArray: ArrayList<Imag
         }
     }
 
-    private var mRecorder: MediaRecorder? = null
 
-    fun startRecorder() {
-        if (mRecorder == null) {
-            mRecorder = MediaRecorder()
-            mRecorder!!.setAudioSource(MediaRecorder.AudioSource.MIC)
-            mRecorder!!.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP)
-            mRecorder!!.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB)
-            mRecorder!!.setOutputFile("/dev/null")
-            mRecorder!!.prepare()
-            mRecorder!!.start()
-        }
-    }
-
-    fun stopRecorder() {
-        if (mRecorder != null) {
-            mRecorder!!.stop()
-            mRecorder!!.release()
-            mRecorder = null
-        }
-    }
-
-    fun getAmplitude(): Double {
-        return if (mRecorder != null)
-            mRecorder!!.maxAmplitude.toDouble()
-        else
-            0.0
-
-    }
 }
 
 private fun ImageView.getBitMap(): Bitmap? {

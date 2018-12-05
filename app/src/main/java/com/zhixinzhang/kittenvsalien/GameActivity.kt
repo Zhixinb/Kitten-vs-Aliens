@@ -18,30 +18,12 @@ class GameActivity : AppCompatActivity() {
 
     var g: GameView? = null
 
-    private val MY_PERMISSIONS_REQUEST_RECORD_AUDIO = 1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        // Check for permission
-        if (ContextCompat.checkSelfPermission(this,
-                        Manifest.permission.RECORD_AUDIO)
-                != PackageManager.PERMISSION_GRANTED) {
 
-            // Permission is not granted, request permission
-            ActivityCompat.requestPermissions(this,
-                    arrayOf(Manifest.permission.RECORD_AUDIO),
-                    MY_PERMISSIONS_REQUEST_RECORD_AUDIO)
-
-            // Check if permission is granted, if not then toast warning.
-            if (ContextCompat.checkSelfPermission(this,
-                            Manifest.permission.RECORD_AUDIO)
-                    != PackageManager.PERMISSION_GRANTED) {
-                Toast.makeText(this, getString(R.string.warning_no_mic), Toast.LENGTH_LONG).show()
-            }
-
-        }
 
 // Assume permission has already been granted
 
