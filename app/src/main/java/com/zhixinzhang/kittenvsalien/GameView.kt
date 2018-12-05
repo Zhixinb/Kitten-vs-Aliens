@@ -1,10 +1,6 @@
 package com.zhixinzhang.kittenvsalien
 
 import android.content.Context
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import android.graphics.Canvas
-import android.graphics.Paint
 import android.graphics.drawable.BitmapDrawable
 import android.os.Handler
 import android.util.Log
@@ -12,6 +8,16 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.Toast
 import java.util.*
+import android.R.attr.maxWidth
+import android.R.attr.maxHeight
+import android.graphics.*
+import android.opengl.ETC1.getHeight
+import android.opengl.ETC1.getWidth
+import android.media.MediaRecorder
+
+
+
+
 
 
 class GameView(context: Context?, w: Float, h: Float, alienArray: ArrayList<ImageView>, kitten: ImageView) : View(context) {
@@ -20,9 +26,13 @@ class GameView(context: Context?, w: Float, h: Float, alienArray: ArrayList<Imag
     val timer = Timer()
     val timehandler = Handler()
 
+    val enemyPoints = 100
+    var score = 0
     val maxSpeed = 5
     val minSpeed = 2
     val maxEntityCnt = 10
+    val projectileSpeed = - 10
+    // Also need min and max of audio amp
 
     var dim = (wide / 4).toInt()
     var alienArray = alienArray
@@ -43,11 +53,14 @@ class GameView(context: Context?, w: Float, h: Float, alienArray: ArrayList<Imag
 
     fun startTimer() {
         timer.schedule(timetask, 1, 10)
+        startRecorder()
     }
 
     fun stopTimer() {
         timer.cancel()
         timer.purge()
+
+        stopRecorder()
     }
 
     override fun onDraw(canvas: Canvas?) {
@@ -65,7 +78,11 @@ class GameView(context: Context?, w: Float, h: Float, alienArray: ArrayList<Imag
         updateEntities()
         redraw(canvas)
 
+
+
     }
+
+
 
     private fun addProjectile() {
         if (projectileEntityList.size in 0..maxEntityCnt && projectileBitmaps.size > 0) {
@@ -75,13 +92,13 @@ class GameView(context: Context?, w: Float, h: Float, alienArray: ArrayList<Imag
             if (projectileBitmaps[index] != null && kittenEntity != null) {
 
 
-                var xPos = kittenEntity!!.x
+                var xPos = kittenEntity!!.x + + (kittenEntity!!.width() - projectileBitmaps[index]!!.width)/2
                 var yPos = kittenEntity!!.y
                 Log.d("projectile", "adding at x:" + xPos + " y: " + yPos + "offset:" + (kittenEntity!!.width() - projectileBitmaps[index]!!.width)/2)
                 Log.d("debug", "xPo generated:" + xPos)
-                if (!isColliding(xPos.toInt(), yPos.toInt(), projectileEntityList)) {
+                if (!isColliding(xPos.toInt(), yPos.toInt(), projectileBitmaps[index]!!.width, projectileBitmaps[index]!!.height, projectileEntityList)) {
                     Log.d("debug", "xPos used:" + xPos)
-                    addEntity(projectileEntityList, projectileBitmaps[index], xPos, yPos, 0, -5)
+                    addEntity(projectileEntityList, projectileBitmaps[index], xPos, yPos, 0, projectileSpeed)
                     Log.d("projectile", "added")
                 }
 
@@ -104,10 +121,12 @@ class GameView(context: Context?, w: Float, h: Float, alienArray: ArrayList<Imag
             canvas?.drawBitmap(kittenEntity!!.bitmap, kittenEntity!!.x, kittenEntity!!.y, paint)
         }
 
+        drawText("Score: $score", 10F, 100F, paint, canvas)
+
     }
 
     private fun updateEntities() {
-        //TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+
         for (entity in alienEntityList){
             entity.move()
         }
@@ -116,27 +135,34 @@ class GameView(context: Context?, w: Float, h: Float, alienArray: ArrayList<Imag
         for (entity in projectileEntityList){
             entity.move()
         }
-        // TODO move kitten and projectile
+
+        Log.d("micget", getAmplitude().toString())
+        //kittenEntity?.move()
     }
 
-    private fun getScaledBitmap(resourceId : Int, targetW : Int, targetH : Int): Bitmap {
+    private fun getScaledBitmap(resourceId : Int, maxWidth : Int, maxHeight : Int): Bitmap {
 
 
-        val bmOptions = BitmapFactory.Options().apply {
-            // Get the dimensions of the bitmap
-            inJustDecodeBounds = true
-            BitmapFactory.decodeResource(resources, resourceId)
-            val photoW: Int = outWidth
-            val photoH: Int = outHeight
+        var image = BitmapFactory.decodeResource(resources, resourceId)
+        if (maxHeight > 0 && maxWidth > 0) {
+            val width = image.getWidth()
+            val height = image.getHeight()
+            val ratioBitmap = width.toFloat() / height.toFloat()
+            val ratioMax = maxWidth.toFloat() / maxHeight.toFloat()
 
-            // Determine how much to scale down the image
-            val scaleFactor: Int = Math.min(photoW / targetW, photoH / targetH)
-
-            // Decode the image file into a Bitmap sized to fill the View
-            inJustDecodeBounds = false
-            inSampleSize = scaleFactor
+            var finalWidth = maxWidth
+            var finalHeight = maxHeight
+            if (ratioMax > ratioBitmap) {
+                finalWidth = (maxHeight.toFloat() * ratioBitmap).toInt()
+            } else {
+                finalHeight = (maxWidth.toFloat() / ratioBitmap).toInt()
+            }
+            image = Bitmap.createScaledBitmap(image, finalWidth, finalHeight, true)
+            return image
+        } else {
+            return image
         }
-        return BitmapFactory.decodeResource(resources, resourceId, bmOptions)
+
     }
 
     private fun checkStates() {
@@ -144,11 +170,38 @@ class GameView(context: Context?, w: Float, h: Float, alienArray: ArrayList<Imag
         removeOffScreen(alienEntityList)
 
         removeOffScreen(projectileEntityList)
+
+        checkProjectileHits()
+
         checkLosingCondition()
     }
 
+
+
+    private fun checkProjectileHits() {
+        val arrayList = arrayListOf<Entity>()
+        for (alien in alienEntityList){
+            if (isColliding(alien.x.toInt(), alien.y.toInt(), alien.width(), alien.height(), projectileEntityList)){
+                arrayList.add(alien)
+            }
+        }
+
+        val iterator = alienEntityList.iterator()
+        while (iterator.hasNext()) {
+            var entity = iterator.next()
+            for (alien in arrayList) {
+                if (alien == entity){
+                    iterator.remove()
+                    score += enemyPoints
+                }
+            }
+
+
+        }
+    }
+
     private fun checkLosingCondition() {
-        if (kittenEntity != null && isColliding(kittenEntity!!.x.toInt(), kittenEntity!!.y.toInt(), alienEntityList)) {
+        if (kittenEntity != null && isColliding(kittenEntity!!.x.toInt(), kittenEntity!!.y.toInt(), kittenEntity!!.width(), kittenEntity!!.height(), alienEntityList)) {
             Toast.makeText(context, "LOST", Toast.LENGTH_LONG).show()
             stopTimer()
         }
@@ -174,7 +227,7 @@ class GameView(context: Context?, w: Float, h: Float, alienArray: ArrayList<Imag
             if (alienBitmaps[index] != null) {
                 var xPos = random.nextInt(alienArray.size) * wide / alienArray.size
                 Log.d("debug", "xPo generated:" + xPos)
-                if (!isColliding(xPos.toInt(), 0, alienEntityList)) {
+                if (!isColliding(xPos.toInt(), 0, alienBitmaps[index]!!.width, alienBitmaps[index]!!.height,  alienEntityList)) {
                     Log.d("debug", "xPos used:" + xPos)
                     addEntity(alienEntityList, alienBitmaps[index], xPos, 0F, 0, random.nextInt(maxSpeed - minSpeed) + minSpeed)
                 }
@@ -190,22 +243,33 @@ class GameView(context: Context?, w: Float, h: Float, alienArray: ArrayList<Imag
 
     }
 
+    private fun drawText(text : String, x : Float, y : Float, paint : Paint, canvas: Canvas?){
+        paint.color = Color.WHITE
+        paint.textSize = 100F
+        paint.isAntiAlias = true
+
+        paint.style = Paint.Style.FILL
+
+        canvas?.drawText(text, x, y, paint)
+    }
 
     // Check if two bitmap overlaps, assuming bitmap is a dim x dim square
-    private fun isOverlap(x1 : Int, y1 : Int, x2 : Int, y2 : Int) : Boolean{
+    private fun isOverlap(x1 : Int, y1 : Int, width : Int, height : Int, entity: Entity) : Boolean{
         //return x2 in x1..(x1 + dim) || (x2 + dim) in x1..(x1 + dim) || y2 in y1..(y1 + dim) || (y2 + dim) in y1..(y1 + dim)
+        val x2 = entity.x.toInt()
+        val y2 = entity.y.toInt()
         Log.d("debug", "1:$x1, $y1 2:$x2, $y2, $dim")
-        var collisionX = x1 + dim >= x2 &&
-                x2 + dim >= x1
-        var collisionY = y1 + dim >= y2 &&
-                y2 + dim >= y1
+        var collisionX = x1 + width >= x2 &&
+                x2 + entity.width() >= x1
+        var collisionY = y1 + height >= y2 &&
+                y2 + entity.height() >= y1
         return collisionX && collisionY
     }
 
-    private fun isColliding(x : Int, y : Int, arrayList: MutableList<Entity>) : Boolean{
+    private fun isColliding(x : Int, y : Int, width: Int, height: Int, arrayList: MutableList<Entity>) : Boolean{
 
         for (entity in arrayList){
-            if (isOverlap(x, y, entity.x.toInt(), entity.y.toInt())) {
+            if (isOverlap(x, y, width, height, entity)) {
                 Log.d("debug", "Compared  1:$x, $y 2:${entity.x.toInt()}, ${entity.y.toInt()}")
                 Log.d("debug", "BAD")
                 return true
@@ -220,7 +284,7 @@ class GameView(context: Context?, w: Float, h: Float, alienArray: ArrayList<Imag
             kittenBitmap = kitten.getBitMap()
             Log.d("initialization", "init cat")
             if (kittenBitmap != null){
-                kittenEntity  = Entity( kittenBitmap, (wide - kittenBitmap!!.width) / 2, high - 2 * kittenBitmap!!.height, 0, 0)
+                kittenEntity  = Entity( kittenBitmap, (wide - kittenBitmap!!.width) / 2, (high - 1.5 * kittenBitmap!!.height).toFloat(), 0, 0)
             }
 
         }
@@ -236,16 +300,43 @@ class GameView(context: Context?, w: Float, h: Float, alienArray: ArrayList<Imag
             }
         }
 
-        if (projectileBitmaps.size < 1 && kittenEntity != null) {
-            projectileBitmaps.add(getScaledBitmap(R.drawable.projectile_1, kittenEntity!!.width(), kittenEntity!!.height()))
-          /*  projectileBitmaps.add(0, getScaledBitmap(R.drawable.projectile_1, dim, dim))
-            projectileBitmaps.add(1, getScaledBitmap(R.drawable.projectile_2, dim, dim))*/
-            //projectileBitmaps.addAll( arrayListOf(BitmapFactory.decodeResource(resources, R.drawable.projectile_1), BitmapFactory.decodeResource(resources, R.drawable.projectile_2)))
+        if (projectileBitmaps.size < 2 && kittenEntity != null) {
+            projectileBitmaps.add(getScaledBitmap(R.drawable.projectile_1, kittenEntity!!.width() / 2, kittenEntity!!.height() / 2))
+            projectileBitmaps.add(getScaledBitmap(R.drawable.projectile_2, kittenEntity!!.width() / 2, kittenEntity!!.height() / 2))
+
             Log.d("debug", "proj" + projectileBitmaps)
         }
     }
 
+    private var mRecorder: MediaRecorder? = null
 
+    fun startRecorder() {
+        if (mRecorder == null) {
+            mRecorder = MediaRecorder()
+            mRecorder!!.setAudioSource(MediaRecorder.AudioSource.MIC)
+            mRecorder!!.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP)
+            mRecorder!!.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB)
+            mRecorder!!.setOutputFile("/dev/null")
+            mRecorder!!.prepare()
+            mRecorder!!.start()
+        }
+    }
+
+    fun stopRecorder() {
+        if (mRecorder != null) {
+            mRecorder!!.stop()
+            mRecorder!!.release()
+            mRecorder = null
+        }
+    }
+
+    fun getAmplitude(): Double {
+        return if (mRecorder != null)
+            mRecorder!!.maxAmplitude.toDouble()
+        else
+            0.0
+
+    }
 }
 
 private fun ImageView.getBitMap(): Bitmap? {
