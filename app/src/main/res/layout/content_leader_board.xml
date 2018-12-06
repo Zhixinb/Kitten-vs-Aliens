@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context=".LaunchActivity"
+    tools:showIn="@layout/activity_launch">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:text="@string/leaderBoardMsg"
+            android:textStyle="bold"
+            android:textSize="@dimen/welcomeTextSize"/>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_score_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+        </android.support.v7.widget.RecyclerView>
+
+        <Button
+            android:id="@+id/clearBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0"
+            android:text="@string/clear_scores"
+            android:layout_marginLeft="@dimen/buttonHorizontalMargin"
+            android:layout_marginRight="@dimen/buttonHorizontalMargin"/>
+    </LinearLayout>
+
+</ScrollView>

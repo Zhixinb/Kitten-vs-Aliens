@@ -1,14 +1,18 @@
 package com.zhixinzhang.kittenvsalien
 
+import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.preference.PreferenceManager
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
+import android.view.Menu
+import android.view.MenuItem
 import android.widget.Toast
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_leader_board.*
+import kotlinx.android.synthetic.main.content_leader_board.*
 
 class LeaderBoardActivity : AppCompatActivity() {
     private lateinit var defaultPrefs: SharedPreferences
@@ -16,6 +20,8 @@ class LeaderBoardActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_leader_board)
+        setSupportActionBar(back_toolbar)
+
         defaultPrefs = PreferenceManager.getDefaultSharedPreferences(this)
 
         // Get stored json mapping of scores, key cannot be stored as resource
@@ -54,6 +60,24 @@ class LeaderBoardActivity : AppCompatActivity() {
         // Set button listener
         clearBtn.setOnClickListener {
             createClearDialog()
+        }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        val inflater = menuInflater
+        inflater.inflate(R.menu.back_menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.back_btn -> {
+                val intent = Intent(this, LaunchActivity::class.java)
+                startActivity(intent)
+                finish()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
         }
     }
 

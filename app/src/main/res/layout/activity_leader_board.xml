@@ -1,36 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".LeaderBoardActivity"
-    android:orientation="vertical">
+    tools:context=".LeaderBoardActivity">
 
-    <TextView
+    <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:text="@string/leaderBoardMsg"
-        android:textStyle="bold"
-        android:textSize="@dimen/welcomeTextSize"/>
+        android:theme="@style/AppBarOverlay">
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/rv_score_list"
-        android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1">
-
-        </android.support.v7.widget.RecyclerView>
-
-        <Button
-            android:id="@+id/clearBtn"
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/back_toolbar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="0"
-            android:text="@string/clear_scores"
-            android:layout_marginLeft="@dimen/buttonHorizontalMargin"
-            android:layout_marginRight="@dimen/buttonHorizontalMargin"/>
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:popupTheme="@style/PopupOverlay" />
+
+    </android.support.design.widget.AppBarLayout>
+
+    <include layout="@layout/content_leader_board" />
 
 
-</LinearLayout>
+
+
+</android.support.design.widget.CoordinatorLayout>

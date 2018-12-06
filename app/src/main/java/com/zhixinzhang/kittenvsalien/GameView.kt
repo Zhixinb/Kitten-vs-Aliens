@@ -222,20 +222,20 @@ class GameView(context: Context?, w: Float, h: Float, alienArray: ArrayList<Imag
     // Check if an alien got hit, if so then remove
     private fun checkProjectileHits() {
         // List of entities to remove
-        val arrayList = arrayListOf<Entity>()
+        val alienList = arrayListOf<Entity>()
 
         // Iterate through the list and check if colliding with any of the projectiles entities, if so then add to list
         for (alien in alienEntityList) {
             if (isColliding(alien.x.toInt(), alien.y.toInt(), alien.width(), alien.height(), projectileEntityList)) {
-                arrayList.add(alien)
+                alienList.add(alien)
             }
         }
 
         // Iterate through the existing aliens, check it against the ones in the array list, if the same then remove, increment score
-        val iterator = alienEntityList.iterator()
+        var iterator = alienEntityList.iterator()
         while (iterator.hasNext()) {
             var entity = iterator.next()
-            for (alien in arrayList) {
+            for (alien in alienList) {
                 if (alien == entity) {
                     iterator.remove()
                     score += enemyPoints
@@ -274,7 +274,12 @@ class GameView(context: Context?, w: Float, h: Float, alienArray: ArrayList<Imag
         }
 
         // Display a negative button on alert dialog
-        builder.setNeutralButton(parent_context!!.getString(R.string.no)) { dialog, _ -> dialog.dismiss() }
+        builder.setNeutralButton(parent_context!!.getString(R.string.no)) { _, _ ->
+            val intent = Intent(parent_context, LaunchActivity::class.java)
+
+            // Prevent going back to finished game board
+            (parent_context as Activity).finish()
+            parent_context?.startActivity(intent) }
 
         // Finally, make the alert dialog using builder
         val dialog: AlertDialog = builder.create()
