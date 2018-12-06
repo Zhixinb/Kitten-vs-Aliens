@@ -1,14 +1,9 @@
 package com.zhixinzhang.kittenvsalien
 
-import android.Manifest
-import android.content.pm.PackageManager
 import android.os.Bundle
-import android.support.v4.app.ActivityCompat
-import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
 import android.util.DisplayMetrics
 import android.widget.ImageView
-import android.widget.Toast
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_main.*
 import java.util.*
@@ -23,17 +18,18 @@ class GameActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-
-
-// Assume permission has already been granted
-
+        // Get the array of iv
         var alienArray = arrayListOf(alien1, alien2, alien3, alien4)
+
+        // Use image views as contains to load images generated from a random seed
         loadImages(alienArray, kitten, getRandomSeed())
+
+        // Set up for custom animation game view
         val displayMetrics = DisplayMetrics()
         windowManager.defaultDisplay.getMetrics(displayMetrics)
         val h = displayMetrics.heightPixels
         val w = displayMetrics.widthPixels
-        g = GameView(this, w.toFloat(), h.toFloat(), alienArray, kitten)
+        g = GameView(this, w.toFloat(), h.toFloat(), alienArray, kitten, intent.getIntExtra(getString(R.string.low_range), 100), intent.getIntExtra(getString(R.string.high_range), 1000), intent.getStringExtra(getString(R.string.playerOneNameTag)))
         setContentView(g)
         g?.invalidate()
         g?.startTimer()
@@ -45,10 +41,11 @@ class GameActivity : AppCompatActivity() {
         g?.stopTimer()
     }
 
+    // Load images from robohash api using Picasso
     private fun loadImages(alienArray: ArrayList<ImageView>, kitten: ImageView, seed: String) {
 
         for (alien in alienArray) {
-            Picasso.get().load("https://robohash.org/${alien.toString() + seed}?set=set2").into(alien)
+            Picasso.get().load("https://robohash.org/${alien.toString() + seed}.png?set=set2").into(alien)
         }
 
         Picasso.get().load(getString(R.string.robo_cat)).into(kitten)

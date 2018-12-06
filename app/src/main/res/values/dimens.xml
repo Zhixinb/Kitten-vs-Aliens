@@ -3,4 +3,10 @@
     <dimen name="img_padding">10dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="textSize">20sp</dimen>
+    <dimen name="horizontalInputMargin">50dp</dimen>
+    <dimen name="regularTextSize">20sp</dimen>
+    <dimen name="welcomeTextSize">30sp</dimen>
+    <dimen name="buttonHorizontalMargin">100dp</dimen>
+    <dimen name="list_item_padding">20sp</dimen>
+    <dimen name="list_item_text_size">20sp</dimen>
 </resources>

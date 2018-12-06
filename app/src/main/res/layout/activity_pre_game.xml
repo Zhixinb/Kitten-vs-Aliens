@@ -9,7 +9,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical">
 
         <ImageView
@@ -62,7 +62,31 @@
                 android:textStyle="bold"
                 android:text="@string/high" />
         </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
 
+            android:layout_marginLeft="@dimen/horizontalInputMargin"
+            android:layout_marginRight="@dimen/horizontalInputMargin"
+            >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/player_1_game_tag"
+                android:textSize="@dimen/regularTextSize"
+                />
+
+            <EditText
+                android:id="@+id/playerOneNameInput"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:inputType="textPersonName"
+                android:hint="@string/player_name"
+                android:text="@string/playerOneDefaultName"
+                android:textSize="@dimen/regularTextSize"/>
+        </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"

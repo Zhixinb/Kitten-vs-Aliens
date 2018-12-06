@@ -2,10 +2,9 @@
     <string name="app_name">Kitten Vs Alien</string>
     <string name="alien">Alien</string>
     <string name="kitten">Kitten</string>
-    <string name="robo_cat">https://robohash.org/9001?set=set4</string>
+    <string name="robo_cat">https://robohash.org/9001.png?set=set4</string>
     <string name="alpha_numeric">0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ</string>
     <string name="warning_no_mic">The game will not function as intended without the microphone!</string>
-    <string name="title_activity_launch">LaunchActivity</string>
     <string name="app_instruction">To start a new game or go to the leader board, click the menu icon above!</string>
     <string name="splash_screen">Splash screen</string>
     <string name="calibrate">Calibrate</string>
@@ -13,4 +12,27 @@
     <string name="high">High: -</string>
     <string name="low">Low: -</string>
     <string name="calibration_msg">Please calibrate sound range</string>
+    <string name="hush">Hush</string>
+    <string name="be_loud">Be loud!</string>
+    <string name="player_1_game_tag">Player Name:</string>
+    <string name="playerOneDefaultName">Player One</string>
+    <string name="empty_string" />
+    <string name="playerOneNameTag">playerOneName</string>
+    <string name="player_name">Player Name</string>
+    <string name="winnerName">winnerName</string>
+    <string name="highScore">highScore</string>
+    <string name="game_over_msg">Game Over\u0020</string>
+    <string name="leaderBoardMsg">Leader Board</string>
+    <string name="clear_scores">Clear Scores</string>
+    <string name="clearLeaderBoardTitle">Clear Leader Board?</string>
+    <string name="clearWarning">All scores will be erased! Are you sure?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="low_range">low</string>
+    <string name="high_range">high</string>
+    <string name="leaderBoardKey">leaderBoardKey</string>
+    <string name="lowKey">lowKey</string>
+    <string name="highKey">highKey</string>
+    <string name="no_new_high_score_msg">No new high score :(</string>
+    <string name="new_high_score_msg">New high score! :)</string>
 </resources>

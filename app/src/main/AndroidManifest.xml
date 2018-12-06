@@ -24,6 +24,9 @@
             </intent-filter>
         </activity>
         <activity android:name=".PreGameActivity"
+            android:theme="@style/Theme.AppCompat.NoActionBar"
+            android:windowSoftInputMode="stateHidden"></activity>
+        <activity android:name=".LeaderBoardActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar"></activity>
     </application>
 

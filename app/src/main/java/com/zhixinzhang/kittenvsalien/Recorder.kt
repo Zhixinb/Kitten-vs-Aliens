@@ -2,7 +2,8 @@ package com.zhixinzhang.kittenvsalien
 
 import android.media.MediaRecorder
 
-class Recorder{
+// Recorder class
+class Recorder {
     companion object {
         var mRecorder: MediaRecorder? = null
 
@@ -31,7 +32,7 @@ class Recorder{
             return if (mRecorder != null)
                 mRecorder!!.maxAmplitude.toDouble()
             else
-                0.0
+                -1.0
 
         }
     }
