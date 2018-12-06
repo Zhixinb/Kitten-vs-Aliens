@@ -8,4 +8,9 @@
     <string name="title_activity_launch">LaunchActivity</string>
     <string name="app_instruction">To start a new game or go to the leader board, click the menu icon above!</string>
     <string name="splash_screen">Splash screen</string>
+    <string name="calibrate">Calibrate</string>
+    <string name="start_game">Start Game</string>
+    <string name="high">High: -</string>
+    <string name="low">Low: -</string>
+    <string name="calibration_msg">Please calibrate sound range</string>
 </resources>

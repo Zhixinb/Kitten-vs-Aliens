@@ -22,7 +22,6 @@ class GameView(context: Context?, w: Float, h: Float, alienArray: ArrayList<Imag
     val high = h
     val timer = Timer()
     val timehandler = Handler()
-    val recorder = Recorder()
 
     val enemyPoints = 100
     var score = 0
@@ -51,14 +50,14 @@ class GameView(context: Context?, w: Float, h: Float, alienArray: ArrayList<Imag
 
     fun startTimer() {
         timer.schedule(timetask, 1, 10)
-        recorder.startRecorder()
+        Recorder.startRecorder()
     }
 
     fun stopTimer() {
         timer.cancel()
         timer.purge()
 
-        recorder.stopRecorder()
+        Recorder.stopRecorder()
     }
 
     override fun onDraw(canvas: Canvas?) {
@@ -134,7 +133,7 @@ class GameView(context: Context?, w: Float, h: Float, alienArray: ArrayList<Imag
             entity.move()
         }
 
-        Log.d("micget", recorder.getAmplitude().toString())
+        Log.d("micget", Recorder.getAmplitude().toString())
         //kittenEntity?.move()
     }
 

@@ -32,7 +32,7 @@
             android:padding="15dp"
             android:text="@string/app_instruction"
             android:textAlignment="center"
-            android:textSize="20sp" />
+            android:textSize="@dimen/textSize" />
     </LinearLayout>
 
 </ScrollView>
