@@ -35,4 +35,8 @@
     <string name="highKey">highKey</string>
     <string name="no_new_high_score_msg">No new high score :(</string>
     <string name="new_high_score_msg">New high score! :)</string>
+    <string name="test">test</string>
+    <string name="back_btn_title">Back</string>
+    <string name="new_game_title">New Game</string>
+    <string name="leader_board_title">Leader Board</string>
 </resources>

@@ -6,7 +6,7 @@
     <item
         android:id="@+id/back_btn"
         android:orderInCategory="300"
-        android:title="User"
+        android:title="@string/back_btn_title"
         android:icon="@drawable/baseline_home_white_48"
         app:showAsAction="ifRoom"></item>
 

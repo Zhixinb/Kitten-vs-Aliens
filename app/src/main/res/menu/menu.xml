@@ -6,13 +6,13 @@
     <item
         android:id="@+id/action_new_game"
         android:orderInCategory="300"
-        android:title="User"
+        android:title="@string/new_game_title"
         android:icon="@drawable/ic_new_game"
         app:showAsAction="ifRoom"></item>
     <item
         android:id="@+id/action_leader_board"
         android:orderInCategory="300"
-        android:title="User"
+        android:title="@string/leader_board_title"
         android:icon="@drawable/ic_leader_board"
-        app:showAsAction="ifRoom"></item>
+        app:showAsAction="ifRoom" />
 </menu>

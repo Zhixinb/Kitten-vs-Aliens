@@ -18,6 +18,7 @@ Using a Timer or other Async task
 
 Modified Proposal: 12/6/18
 Removed spinner implementation, different difficulties are hard to balance with multiple variables contribution to play session.
+Used Picasso to load images fron RoboHash
 
 11 Points Total
 
