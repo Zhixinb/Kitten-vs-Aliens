@@ -1,3 +1,4 @@
+
 # Kitten vs Aliens
 
 My final project for my Android Mobile App Development course at the University of Pennsylvania, using Kotlin and RESTful APIs to make a playful twist on the classic *Alien Invader* by using your microphone volume to control your avatar. 
@@ -9,6 +10,8 @@ The name of the project will be “Kitten vs Aliens”. The application will be 
 The game will maintain a leaderboard, which will be utilizing SharedPreferences to keep data persistent over the runs of the application and use a RecyclerView with custom adaptor to hold the leaderboard entries. The game will contain at least 3 activities, the main screen, the leaderboard, and game activity. There will be a pregame screen for the player to enter their name and choose the difficulty, which will be from a spinner implementation. I will be using the RoboHash API to generate random alien and kitten sprites. I will using the microphone as the player input. The sprites will be moved with animation and a custom view, using a timer.
 
 ## Features fulfilled
+Required 10 Points Total
+
 1pts: 
 - Use of SharedPreferences
 - Use of ListView/RecyclerView with custom adapter
@@ -28,3 +31,13 @@ Modified Proposal: 12/6/18
 - Used Picasso to load images fron RoboHash
 
 11 Points Total
+
+## Demo:
+Start screen:
+<img src="https://raw.githubusercontent.com/Zhixinb/Kitten-vs-Aliens/master/start_screen.png" width="250">
+
+Calibrating ambient noise and max volume for volume range:
+<img src="https://raw.githubusercontent.com/Zhixinb/Kitten-vs-Aliens/master/calibration.gif" width="250">
+
+Game play using the volume range and submitting high score to leaderboard:
+<img src="https://raw.githubusercontent.com/Zhixinb/Kitten-vs-Aliens/master/game_play.gif" width="250">
