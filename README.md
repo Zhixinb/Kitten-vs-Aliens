@@ -34,10 +34,13 @@ Modified Proposal: 12/6/18
 
 ## Demo:
 Start screen:
+
 <img src="https://raw.githubusercontent.com/Zhixinb/Kitten-vs-Aliens/master/start_screen.png" width="250">
 
 Calibrating ambient noise and max volume for volume range:
+
 <img src="https://raw.githubusercontent.com/Zhixinb/Kitten-vs-Aliens/master/calibration.gif" width="250">
 
 Game play using the volume range and submitting high score to leaderboard:
+
 <img src="https://raw.githubusercontent.com/Zhixinb/Kitten-vs-Aliens/master/game_play.gif" width="250">
